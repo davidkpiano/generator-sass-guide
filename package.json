@@ -28,6 +28,7 @@
     "yosay": "^1.0.2"
   },
   "devDependencies": {
+    "babel": "^5.4.7",
     "mocha": "*"
   }
 }
