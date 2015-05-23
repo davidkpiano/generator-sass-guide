@@ -2,6 +2,11 @@
 
 **Currently under design/development.**
 
+```bash
+npm install -g yo
+yo sass-guide
+```
+
 ### Getting Started
 The sass-guide generator is currently under development. Its main intent is to allow developers to easily scaffold and maintain a Sass project using the principles and [7-1 architecture](http://sass-guidelin.es/#the-7-1-pattern) in Hugo Giraudel's [Sass Guidelines](http://sass-guidelin.es).
 
