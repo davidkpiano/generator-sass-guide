@@ -1,7 +1,7 @@
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
-    value: true
+  value: true
 });
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -26,61 +26,61 @@ var _path = require('path');
 
 var _path2 = _interopRequireDefault(_path);
 
+// Paths
+var vendorPath = _path2['default'].join(__dirname, '../../vendor');
+
+var paths = {
+  sass: _path2['default'].join(vendorPath, 'sass-boilerplate/stylesheets')
+};
+
 var SassGuideGenerator = (function (_Base) {
-    function SassGuideGenerator() {
-        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-            args[_key] = arguments[_key];
-        }
-
-        _classCallCheck(this, SassGuideGenerator);
-
-        _get(Object.getPrototypeOf(SassGuideGenerator.prototype), 'constructor', this).apply(this, args);
+  function SassGuideGenerator() {
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
-    _inherits(SassGuideGenerator, _Base);
+    _classCallCheck(this, SassGuideGenerator);
 
-    _createClass(SassGuideGenerator, [{
-        key: 'prompting',
-        get: function () {
-            return {
-                appName: function appName() {
-                    var _this4 = this;
+    _get(Object.getPrototypeOf(SassGuideGenerator.prototype), 'constructor', this).apply(this, args);
+  }
 
-                    var done = this.async();
-                    var prompt = [{
-                        type: 'input',
-                        name: 'appName',
-                        message: 'What is your app called?'
-                    }];
+  _inherits(SassGuideGenerator, _Base);
 
-                    this.prompt(prompt, function (_ref) {
-                        var appName = _ref.appName;
+  _createClass(SassGuideGenerator, [{
+    key: 'prompting',
+    get: function () {
+      return {
+        appName: function appName() {
+          var _this4 = this;
 
-                        _this4.options.appName = appName;
-                        done();
-                    });
-                }
-            };
+          var done = this.async();
+          var prompt = [{
+            type: 'input',
+            name: 'appName',
+            message: 'What is your app called?'
+          }];
+
+          this.prompt(prompt, function (_ref) {
+            var appName = _ref.appName;
+
+            _this4.options.appName = appName;
+            done();
+          });
         }
-    }, {
-        key: 'writing',
-        get: function () {
-            return {
-                app: function app() {
-                    this.mkdir('sass');
-                    this.mkdir('sass/base');
-                    this.mkdir('sass/components');
-                    this.mkdir('sass/layout');
-                    this.mkdir('sass/pages');
-                    this.mkdir('sass/themes');
-                    this.mkdir('sass/utils');
-                    this.mkdir('sass/vendors');
-                }
-            };
+      };
+    }
+  }, {
+    key: 'writing',
+    get: function () {
+      return {
+        app: function app() {
+          this.directory(paths.sass, 'sass');
         }
-    }]);
+      };
+    }
+  }]);
 
-    return SassGuideGenerator;
+  return SassGuideGenerator;
 })(_yeomanGenerator.Base);
 
 exports['default'] = SassGuideGenerator;

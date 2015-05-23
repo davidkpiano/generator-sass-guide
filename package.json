@@ -11,7 +11,8 @@
     "url": "https://github.com/davidkpiano"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "babel src/app/index.js --out-file generators/app/index.js && npm link"
   },
   "files": [
     "app"
