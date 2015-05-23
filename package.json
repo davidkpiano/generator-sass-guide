@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "start": "babel src/app/index.js --out-file generators/app/index.js && npm link"
+    "start": "babel src --out-dir generators && npm link"
   },
   "files": [
     "app"

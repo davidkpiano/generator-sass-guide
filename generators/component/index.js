@@ -28,7 +28,7 @@ var _path2 = _interopRequireDefault(_path);
 var vendorPath = _path2['default'].join(__dirname, '../../vendor');
 
 var paths = {
-  sass: _path2['default'].join(vendorPath, 'sass-boilerplate/stylesheets')
+  components: _path2['default'].join(vendorPath, 'sass-boilerplate/stylesheets/components')
 };
 
 var SassGuideGenerator = (function (_Base) {
@@ -48,20 +48,20 @@ var SassGuideGenerator = (function (_Base) {
     key: 'prompting',
     get: function () {
       return {
-        appName: function appName() {
+        componentName: function componentName() {
           var _this = this;
 
           var done = this.async();
           var prompt = [{
             type: 'input',
-            name: 'appName',
-            message: 'What is your app called?'
+            name: 'componentName',
+            message: 'What is the name of your component?'
           }];
 
           this.prompt(prompt, function (_ref) {
-            var appName = _ref.appName;
+            var componentName = _ref.componentName;
 
-            _this.options.appName = appName;
+            _this.options.componentName = componentName;
             done();
           });
         }
@@ -71,8 +71,8 @@ var SassGuideGenerator = (function (_Base) {
     key: 'writing',
     get: function () {
       return {
-        app: function app() {
-          this.directory(paths.sass, 'sass');
+        component: function component() {
+          this.template('component.scss', '_' + this.options.componentName + '.scss');
         }
       };
     }
