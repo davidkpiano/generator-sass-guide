@@ -1,0 +1,22 @@
+@charset 'UTF-8';
+
+// 1. Vendors
+@import 'vendors/all';
+
+// 2. Configuration and helpers
+@import 'utils/all';
+
+// 3. Base stuff
+@import 'base/all';
+
+// 4. Layout-related sections
+@import 'layout/all';
+
+// 5. Components
+@import 'components/all';
+
+// 6. Page-specific styles
+@import 'pages/all';
+
+// 7. Themes
+@import 'themes/all';

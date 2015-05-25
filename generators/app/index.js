@@ -28,7 +28,7 @@ var _path2 = _interopRequireDefault(_path);
 var vendorPath = _path2['default'].join(__dirname, '../../vendor');
 
 var paths = {
-  sass: _path2['default'].join(vendorPath, 'sass-boilerplate/stylesheets')
+  sass: 'sass'
 };
 
 var SassGuideGenerator = (function (_Base) {

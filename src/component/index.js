@@ -28,6 +28,10 @@ export default class SassGuideGenerator extends Base {
 
         this.prompt(prompt, ({ componentName }) => {
           this.options.componentName = componentName;
+
+          this.options.components = this.config.get('components') || [];
+          this.options.components.push(componentName);
+          this.config.set('components', this.options.components);
           done();
         });
       }
@@ -37,7 +41,17 @@ export default class SassGuideGenerator extends Base {
   get writing() {
     return {
       component() {
-        this.template('component.scss', `_${this.options.componentName}.scss`);
+        this.fs.copyTpl(
+          this.templatePath('_component.scss.tmpl'),
+          this.destinationPath(`sass/components/_${this.options.componentName}.scss`),
+          { options: this.options });
+      },
+
+      all() {
+        this.fs.copyTpl(
+          this.templatePath('_all.scss.tmpl'),
+          this.destinationPath('sass/components/_all.scss'),
+          { components: this.config.get('components') });
       }
     }
   }

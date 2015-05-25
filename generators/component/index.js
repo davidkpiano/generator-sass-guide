@@ -55,13 +55,17 @@ var SassGuideGenerator = (function (_Base) {
           var prompt = [{
             type: 'input',
             name: 'componentName',
-            message: 'What is the name of your component?'
+            message: 'Component name:'
           }];
 
           this.prompt(prompt, function (_ref) {
             var componentName = _ref.componentName;
 
             _this.options.componentName = componentName;
+
+            _this.options.components = _this.config.get('components') || [];
+            _this.options.components.push(componentName);
+            _this.config.set('components', _this.options.components);
             done();
           });
         }
@@ -72,7 +76,14 @@ var SassGuideGenerator = (function (_Base) {
     get: function () {
       return {
         component: function component() {
-          this.template('component.scss', '_' + this.options.componentName + '.scss');
+          this.fs.copyTpl(this.templatePath('_component.scss.tmpl'), this.destinationPath('sass/components/_' + this.options.componentName + '.scss'), { options: this.options });
+
+          this.fs['delete'](this.destinationPath('sass/components/_all.scss'));
+        },
+
+        all: function all() {
+
+          this.fs.copyTpl(this.templatePath('_all.scss.tmpl'), this.destinationPath('sass/components/_all.scss'), { components: this.config.get('components') });
         }
       };
     }

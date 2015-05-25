@@ -6,7 +6,7 @@ import path from 'path';
 const vendorPath = path.join(__dirname, '../../vendor');
 
 const paths = {
-  sass: path.join(vendorPath, 'sass-boilerplate/stylesheets') 
+  sass: 'sass'
 };
 
 export default class SassGuideGenerator extends Base {
