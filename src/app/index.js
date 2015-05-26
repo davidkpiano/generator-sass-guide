@@ -21,13 +21,16 @@ export default class SassGuideGenerator extends Base {
         let prompt = [
           {
             type: 'input',
-            name: 'appName',
-            message: 'What is your app called?'
+            name: 'author',
+            message: 'What is your name?'
           }
         ];
 
-        this.prompt(prompt, ({ appName }) => {
-          this.options.appName = appName;
+        this.prompt(prompt, ({ author }) => {
+          this.config.set({
+            meta: { author }
+          });
+
           done();
         });
       }

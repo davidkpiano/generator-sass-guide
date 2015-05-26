@@ -16,22 +16,40 @@ export default class SassGuideGenerator extends Base {
 
   get prompting() {
     return {
-      componentName() {
+      name() {
         let done = this.async();
         let prompt = [
           {
             type: 'input',
-            name: 'componentName',
+            name: 'name',
             message: 'Component name:'
           }
         ];
 
-        this.prompt(prompt, ({ componentName }) => {
-          this.options.componentName = componentName;
+        this.prompt(prompt, ({ name }) => {
+          this.options.component = this.options.component || {}; 
+          this.options.component.name = name;
 
           this.options.components = this.config.get('components') || [];
-          this.options.components.push(componentName);
+          this.options.components.push(name);
           this.config.set('components', this.options.components);
+          done();
+        });
+      },
+
+      description() {
+        let done = this.async();
+        let prompt = [
+          {
+            type: 'input',
+            name: 'description',
+            message: 'Component description:'
+          }
+        ];
+
+        this.prompt(prompt, ({ description }) => {
+          this.options.component.description = description;
+
           done();
         });
       }
@@ -43,8 +61,11 @@ export default class SassGuideGenerator extends Base {
       component() {
         this.fs.copyTpl(
           this.templatePath('_component.scss.tmpl'),
-          this.destinationPath(`sass/components/_${this.options.componentName}.scss`),
-          { options: this.options });
+          this.destinationPath(`sass/components/_${this.options.component.name}.scss`),
+          {
+            component: this.options.component,
+            meta: this.config.get('meta')
+          });
       },
 
       all() {

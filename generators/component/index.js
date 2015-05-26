@@ -48,24 +48,44 @@ var SassGuideGenerator = (function (_Base) {
     key: 'prompting',
     get: function () {
       return {
-        componentName: function componentName() {
+        name: function name() {
           var _this = this;
 
           var done = this.async();
           var prompt = [{
             type: 'input',
-            name: 'componentName',
+            name: 'name',
             message: 'Component name:'
           }];
 
           this.prompt(prompt, function (_ref) {
-            var componentName = _ref.componentName;
+            var name = _ref.name;
 
-            _this.options.componentName = componentName;
+            _this.options.component = _this.options.component || {};
+            _this.options.component.name = name;
 
             _this.options.components = _this.config.get('components') || [];
-            _this.options.components.push(componentName);
+            _this.options.components.push(name);
             _this.config.set('components', _this.options.components);
+            done();
+          });
+        },
+
+        description: function description() {
+          var _this2 = this;
+
+          var done = this.async();
+          var prompt = [{
+            type: 'input',
+            name: 'description',
+            message: 'Component description:'
+          }];
+
+          this.prompt(prompt, function (_ref2) {
+            var description = _ref2.description;
+
+            _this2.options.component.description = description;
+
             done();
           });
         }
@@ -76,13 +96,13 @@ var SassGuideGenerator = (function (_Base) {
     get: function () {
       return {
         component: function component() {
-          this.fs.copyTpl(this.templatePath('_component.scss.tmpl'), this.destinationPath('sass/components/_' + this.options.componentName + '.scss'), { options: this.options });
-
-          this.fs['delete'](this.destinationPath('sass/components/_all.scss'));
+          this.fs.copyTpl(this.templatePath('_component.scss.tmpl'), this.destinationPath('sass/components/_' + this.options.component.name + '.scss'), {
+            component: this.options.component,
+            meta: this.config.get('meta')
+          });
         },
 
         all: function all() {
-
           this.fs.copyTpl(this.templatePath('_all.scss.tmpl'), this.destinationPath('sass/components/_all.scss'), { components: this.config.get('components') });
         }
       };

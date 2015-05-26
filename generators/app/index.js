@@ -54,14 +54,17 @@ var SassGuideGenerator = (function (_Base) {
           var done = this.async();
           var prompt = [{
             type: 'input',
-            name: 'appName',
-            message: 'What is your app called?'
+            name: 'author',
+            message: 'What is your name?'
           }];
 
           this.prompt(prompt, function (_ref) {
-            var appName = _ref.appName;
+            var author = _ref.author;
 
-            _this.options.appName = appName;
+            _this.config.set({
+              meta: { author: author }
+            });
+
             done();
           });
         }
