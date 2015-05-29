@@ -4,6 +4,7 @@
 
 ```bash
 npm install -g yo
+npm install generator-sass-guide
 yo sass-guide
 ```
 
