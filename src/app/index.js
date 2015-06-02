@@ -9,28 +9,35 @@ const paths = {
   sass: 'sass'
 };
 
+const prompts = [
+  {
+    type: 'input',
+    name: 'author',
+    message: 'What is your name?',
+    store: true
+  },
+  {
+    type: 'confirm',
+    name: 'lint',
+    message: 'Use SCSS-Lint?',
+    default: true,
+    store: true
+  }
+];
+
 export default class SassGuideGenerator extends Base {
   constructor(...args) {
     super(...args);
+
+    this.meta = {};
   }
 
   get prompting() {
     return {
-      appName() {
+      app() {
         let done = this.async();
-        let prompt = [
-          {
-            type: 'input',
-            name: 'author',
-            message: 'What is your name?'
-          }
-        ];
 
-        this.prompt(prompt, ({ author }) => {
-          this.config.set({
-            meta: { author }
-          });
-
+        this.prompt(prompts, (res) => {
           done();
         });
       }

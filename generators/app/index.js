@@ -31,6 +31,19 @@ var paths = {
   sass: 'sass'
 };
 
+var prompts = [{
+  type: 'input',
+  name: 'author',
+  message: 'What is your name?',
+  store: true
+}, {
+  type: 'confirm',
+  name: 'lint',
+  message: 'Use SCSS-Lint?',
+  'default': true,
+  store: true
+}];
+
 var SassGuideGenerator = (function (_Base) {
   function SassGuideGenerator() {
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
@@ -40,6 +53,8 @@ var SassGuideGenerator = (function (_Base) {
     _classCallCheck(this, SassGuideGenerator);
 
     _get(Object.getPrototypeOf(SassGuideGenerator.prototype), 'constructor', this).apply(this, args);
+
+    this.meta = {};
   }
 
   _inherits(SassGuideGenerator, _Base);
@@ -48,23 +63,11 @@ var SassGuideGenerator = (function (_Base) {
     key: 'prompting',
     get: function () {
       return {
-        appName: function appName() {
-          var _this = this;
-
+        app: function app() {
           var done = this.async();
-          var prompt = [{
-            type: 'input',
-            name: 'author',
-            message: 'What is your name?'
-          }];
 
-          this.prompt(prompt, function (_ref) {
-            var author = _ref.author;
-
-            _this.config.set({
-              meta: { author: author }
-            });
-
+          this.prompt(prompts, function (res) {
+            console.log(res);
             done();
           });
         }
@@ -75,6 +78,7 @@ var SassGuideGenerator = (function (_Base) {
     get: function () {
       return {
         app: function app() {
+          console.log(this);
           this.directory(paths.sass, 'sass');
         }
       };
