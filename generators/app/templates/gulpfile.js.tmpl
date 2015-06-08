@@ -1,0 +1,20 @@
+var gulp = require('gulp');
+var sass = require('<%= gulp.compiler %>');
+
+var input = './sass/**/*.scss';
+var output = './css';
+
+var paths = {
+  sass: './<%= meta.sassPath %>/**/*.scss',
+  css: './<%= meta.cssPath %>'
+};
+
+gulp.task('sass', function () {
+  return gulp
+    // Find all `.scss` files from the `stylesheets/` folder
+    .src(paths.sass)
+    // Run Sass on those files
+    .pipe(sass())
+    // Write the resulting CSS in the output folder
+    .pipe(gulp.dest(paths.css));
+});

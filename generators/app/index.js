@@ -37,10 +37,64 @@ var prompts = [{
   message: 'What is your name?',
   store: true
 }, {
+  type: 'list',
+  name: 'sass',
+  message: 'Which implementation of Sass are you using?',
+  choices: [{
+    name: 'LibSass (Node Sass)',
+    value: 'node'
+  }, {
+    name: 'Ruby Sass',
+    value: 'ruby'
+  }],
+  'default': 'node',
+  store: true
+}, {
   type: 'confirm',
   name: 'lint',
-  message: 'Use SCSS-Lint?',
+  message: 'Use SCSS-Lint config? (requires SCSS-Lint)',
   'default': true,
+  store: true,
+  when: function when(answers) {
+    return answers.sass == 'ruby';
+  }
+}, {
+  type: 'confirm',
+  name: 'gulp',
+  message: 'Use Gulp?',
+  'default': true,
+  store: true
+}, {
+  type: 'checkbox',
+  name: 'tasks',
+  message: 'Which Gulp Sass tasks would you like to run?',
+  choices: [{
+    name: 'AutoPrefixer',
+    value: 'autoprefixer',
+    checked: true
+  }, {
+    name: 'Source Maps',
+    value: 'sourcemaps',
+    checked: false
+  }, {
+    name: 'SassDoc',
+    value: 'sassdoc',
+    checked: false
+  }],
+  when: function when(answers) {
+    return answers.gulp == true;
+  }
+}, {
+  type: 'input',
+  name: 'sassPath',
+  message: 'SCSS directory?',
+  'default': 'sass',
+  store: true
+}, {
+  type: 'input',
+  name: 'cssPath',
+  message: 'Output directory for compiled CSS?',
+  'default': 'css',
   store: true
 }];
 
@@ -64,10 +118,13 @@ var SassGuideGenerator = (function (_Base) {
     get: function () {
       return {
         app: function app() {
+          var _this = this;
+
           var done = this.async();
 
           this.prompt(prompts, function (res) {
-            console.log(res);
+            _this.config.set('meta', res);
+
             done();
           });
         }
@@ -78,8 +135,37 @@ var SassGuideGenerator = (function (_Base) {
     get: function () {
       return {
         app: function app() {
-          console.log(this);
-          this.directory(paths.sass, 'sass');
+          var meta = this.config.get('meta');
+
+          this.directory(paths.sass, meta.sassPath);
+
+          meta.lint && this.copy('.scss-lint.yml', '.scss-lint.yml');
+        },
+
+        gulp: function gulp() {
+          var meta = this.config.get('meta');
+
+          if (!meta.gulp) return;
+
+          this.fs.copyTpl(this.templatePath('gulpfile.js.tmpl'), this.destinationPath('gulpfile.js'), {
+            meta: this.config.get('meta'),
+            gulp: {
+              compiler: meta.sass == 'node' ? 'gulp-sass' : 'gulp-ruby-sass'
+            }
+          });
+        }
+      };
+    }
+  }, {
+    key: 'install',
+    get: function () {
+      return {
+        app: function app() {
+          var meta = this.config.get('meta');
+
+          if (meta.sass == 'node') {
+            this.npmInstall(['gulp', 'node-sass', 'gulp-sass'], { 'saveDev': true });
+          }
         }
       };
     }
